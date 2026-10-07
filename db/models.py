@@ -1,8 +1,15 @@
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped
+from enum import StrEnum, auto
+from typing import List
+
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
 from db.engine import Base
+
+class PackagingType(StrEnum):
+    IN_PACKAGE = auto()
+    WEIGHT = auto()
 
 
 class DBCheeseType(Base):
@@ -11,3 +18,15 @@ class DBCheeseType(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     description: Mapped[str] = mapped_column(String(499), nullable=False)
+    cheese: Mapped[List["DBCheese"]] = relationship(back_populates="cheese_type")
+
+
+class DBCheese(Base):
+    __tablename__ = 'cheese'
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    title: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
+    price: Mapped[float] = mapped_column(nullable=False)
+    packaging_type: Mapped[PackagingType]
+    cheese_type_id: Mapped[int] = mapped_column(ForeignKey("cheese_type.id"))
+    cheese_type: Mapped["DBCheeseType"] = relationship(back_populates="cheese_type")
