@@ -29,4 +29,4 @@ class DBCheese(Base):
     price: Mapped[float] = mapped_column(nullable=False)
     packaging_type: Mapped[PackagingType]
     cheese_type_id: Mapped[int] = mapped_column(ForeignKey("cheese_type.id"))
-    cheese_type: Mapped["DBCheeseType"] = relationship(back_populates="cheese_type")
+    cheese_type: Mapped["DBCheeseType"] = relationship(back_populates="cheese")
