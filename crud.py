@@ -28,3 +28,7 @@ def create_cheese(db: Session, cheese: schemas.CheeseCreate):
 
     db.refresh(db_cheese)
     return db_cheese
+
+
+def get_cheese_by_id(db: Session, cheese_id: int):
+    return db.query(models.DBCheese).filter(models.DBCheese.id == cheese_id).first()

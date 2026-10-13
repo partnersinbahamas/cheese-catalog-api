@@ -30,5 +30,6 @@ class CheeseCreate(CheeseBase):
 
 class CheeseRead(CheeseBase):
     id: int
+    cheese_type: CheeseTypeRead
 
     model_config = ConfigDict(from_attributes=True)

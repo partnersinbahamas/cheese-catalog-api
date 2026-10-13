@@ -54,3 +54,11 @@ def create_cheese(cheese: schemas.CheeseCreate, db:SessionLocal = Depends(get_db
     if get_cheese_by_title_and_type(db, cheese.title, cheese.cheese_type_id):
         raise HTTPException(status_code=400, detail="Cheese with this title ans cheese type already exists")
     return crud.create_cheese(db, cheese)
+
+@app.get("/cheese/{cheese_id}", response_model=schemas.CheeseRead)
+def get_cheese_by_id(cheese_id: int, db: SessionLocal = Depends(get_db)):
+    db_cheese = crud.get_cheese_by_id(db, cheese_id)
+
+    if db_cheese is None:
+        raise HTTPException(status_code=404, detail="Cheese not found")
+    return db_cheese
