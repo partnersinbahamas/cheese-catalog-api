@@ -4,6 +4,7 @@ import schemas
 import crud
 from db import models
 from db.engine import SessionLocal
+from db.models import PackagingType
 
 app = FastAPI()
 
@@ -45,8 +46,13 @@ def create_cheese_type(
 
 
 @app.get("/cheese/", response_model=list[schemas.CheeseRead])
-def get_cheese(db: SessionLocal = Depends(get_db)):
-    return crud.get_cheese_all(db)
+def get_cheese(
+    packaging_type: PackagingType = None,
+    cheese_title: str = None,
+    cheese_type: str = None,
+    db: SessionLocal = Depends(get_db)
+):
+    return crud.get_cheese_all(db, packaging_type, cheese_title, cheese_type)
 
 
 @app.post("/cheese/", response_model=schemas.CheeseRead)
